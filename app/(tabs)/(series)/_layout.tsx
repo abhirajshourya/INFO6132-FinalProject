@@ -17,7 +17,7 @@ export default function StackLayout() {
                 <Stack.Screen
                     name="detail"
                     options={{
-                        title: 'Detail',
+                        title: 'Series Detail',
                     }}
                 />
             </Stack>
