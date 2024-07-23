@@ -45,7 +45,7 @@ export default function RootLayout() {
             <ThemeProvider
                 value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
-                <StatusBar style='light' />
+                <StatusBar style="light" />
                 <Stack>
                     <Stack.Screen
                         name="(tabs)"
