@@ -46,11 +46,10 @@ const ContentTile = ({ content }: ContentTileProps) => {
                         width={100}
                         height={150}
                     />
-                    <YStack gap={5}>
+                    <YStack gap={5} width={'60%'}>
                         <Spacer />
-                        <H4 flexDirection="row" gap={5} numberOfLines={1}>
-                            {content.Title}
-                        </H4>
+                        <H4 numberOfLines={1}
+                        >{content.Title}</H4>
                         <Text>{content.Year}</Text>
                         <H5>{content.Type}</H5>
                         <Spacer />
