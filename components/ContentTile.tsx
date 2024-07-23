@@ -1,4 +1,4 @@
-import { SearchContentResponse } from '@/constants/Types'
+import { SearchContentType } from '@/constants/Types'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import React from 'react'
@@ -18,14 +18,17 @@ import {
 } from 'tamagui'
 
 export type ContentTileProps = {
-    content: SearchContentResponse
+    content: SearchContentType
 }
 
 const ContentTile = ({ content }: ContentTileProps) => {
     const router = useRouter()
 
     const tilePressHandler = () => {
-        router.push({ pathname: `(${content.Type})/detail`, params: { ...content } })
+        router.push({
+            pathname: `(${content.Type})/detail`,
+            params: { ...content },
+        })
     }
 
     return (
@@ -45,8 +48,10 @@ const ContentTile = ({ content }: ContentTileProps) => {
                     />
                     <YStack gap={5}>
                         <Spacer />
-                        <H3>{content.Title}</H3>
-                        <H4>{content.Year}</H4>
+                        <H4 flexDirection="row" gap={5} numberOfLines={1}>
+                            {content.Title}
+                        </H4>
+                        <Text>{content.Year}</Text>
                         <H5>{content.Type}</H5>
                         <Spacer />
                     </YStack>
