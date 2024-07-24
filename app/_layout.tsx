@@ -1,18 +1,19 @@
+import * as themes from '@/constants/Themes'
+import { useColorScheme } from '@/hooks/useColorScheme'
+import { StoreProvider } from '@/redux/store'
 import {
     DarkTheme,
     DefaultTheme,
     ThemeProvider,
 } from '@react-navigation/native'
+import { config, tokens } from '@tamagui/config/v3'
+import { createTamagui, TamaguiProvider } from '@tamagui/core'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
-import { TamaguiProvider, createTamagui, View } from '@tamagui/core'
-import * as themes from '@/constants/Themes'
-import { tokens, config } from '@tamagui/config/v3'
-import { useColorScheme } from '@/hooks/useColorScheme'
-import { StatusBar } from 'expo-status-bar'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -44,19 +45,23 @@ export default function RootLayout() {
     }
 
     return (
+    <StoreProvider>
         <TamaguiProvider config={tamaguiConfig}>
             <ThemeProvider
                 value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
                 <StatusBar style="light" />
-                <Stack>
-                    <Stack.Screen
+                  <Stack>
+                      <Stack.Screen
                         name="(tabs)"
                         options={{ headerShown: false }}
                     />
-                    <Stack.Screen name="+not-found" />
-                </Stack>
+                      <Stack.Screen name="+not-found" />
+                  </Stack>
             </ThemeProvider>
         </TamaguiProvider>
+    </StoreProvider>
+    
+        
     )
 }
