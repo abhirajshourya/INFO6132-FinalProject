@@ -1,6 +1,6 @@
 import ContentTile from '@/components/ContentTile'
 import { Ionicons } from '@expo/vector-icons'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
     View,
@@ -21,29 +21,28 @@ const Index = () => {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
-    const [movies, setMovies] = useState([
-        {
-            Title: 'The Avengers',
-            Year: '2012',
-            imdbID: 'tt0848228',
-            Type: 'movie',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg',
-        },
-        {
-            Title: 'Avengers: Endgame',
-            Year: '2019',
-            imdbID: 'tt4154796',
-            Type: 'movie',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_SX300.jpg',
-        },
-        {
-            Title: 'Avengers: Infinity War',
-            Year: '2018',
-            imdbID: 'tt4154756',
-            Type: 'movie',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg',
-        },
-    ])
+    const [error, setError] = useState('')
+    const [movies, setMovies] = useState([])
+
+    const movieAPI = async () => {
+        const baseURL = `https://www.omdbapi.com/?s=${search}&type=movie&page=${page}&apikey=c2266d16`
+        setError('')
+        setLoading(true)
+        const response = await fetch(baseURL)
+        const data = await response.json()
+
+        if (response.ok) {
+            setMovies(data.Search)
+        } else {
+            setError('Sorry, an error occurred. Please try again later.')
+            setMovies([])
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        movieAPI()
+    }, [page])
 
     return (
         <ScrollView backgroundColor={'$background'}>
@@ -57,7 +56,10 @@ const Index = () => {
                         value={search}
                         onChangeText={setSearch}
                     />
-                    <Button icon={<Ionicons name={'search'} size={24} />} />
+                    <Button
+                        icon={<Ionicons name={'search'} size={24} />}
+                        onPress={movieAPI}
+                    />
                 </XGroup>
 
                 <XGroup>
@@ -92,7 +94,10 @@ const Index = () => {
                     {loading && (
                         <Spinner size="large" scale={1.5} color={'$color10'} />
                     )}
+                    {error && <Text>{error}</Text>}
                     {!loading &&
+                        !error &&
+                        movies &&
                         movies.map((movie, index) => (
                             <ContentTile key={index} content={movie} />
                         ))}
