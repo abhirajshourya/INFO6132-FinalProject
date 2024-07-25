@@ -1,6 +1,6 @@
 import ContentTile from '@/components/ContentTile'
 import { SearchContentType } from '@/constants/Types'
-import { Ionicons } from '@expo/vector-icons'
+import { Feather, Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
@@ -72,6 +72,48 @@ const Index = () => {
                     />
                 </XGroup>
 
+                {status === 'success' && movies.length > 0 && (
+                    <XGroup>
+                        <Button
+                            icon={<Feather name="chevrons-left" size={24} />}
+                            onPress={() => {
+                                if (page > 1) setPage(1)
+                            }}
+                            disabled={page <= 1}
+                        />
+                        <Button
+                            icon={<Ionicons name={'chevron-back'} size={24} />}
+                            onPress={() => {
+                                if (page > 1) setPage(page - 1)
+                            }}
+                            disabled={page <= 1}
+                        />
+                        <Input
+                            flex={1}
+                            placeholder={'1'}
+                            placeholderTextColor={'$color'}
+                            fontSize={20}
+                            textAlign="center"
+                            keyboardType="numeric"
+                            inputMode="numeric"
+                            disabled
+                            value={`${page.toString()}/${totalResults}`}
+                        />
+                        <Button
+                            icon={
+                                <Ionicons name={'chevron-forward'} size={24} />
+                            }
+                            onPress={() => setPage(page + 1)}
+                            disabled={page >= totalResults}
+                        />
+                        <Button
+                            icon={<Feather name="chevrons-right" size={24} />}
+                            onPress={() => setPage(totalResults)}
+                            disabled={page >= totalResults}
+                        />
+                    </XGroup>
+                )}
+
                 <YGroup>
                     {status === 'loading' && (
                         <Spinner size="large" scale={1.5} color={'$color10'} />
@@ -122,6 +164,13 @@ const Index = () => {
                 {status === 'success' && movies.length > 0 && (
                     <XGroup>
                         <Button
+                            icon={<Feather name="chevrons-left" size={24} />}
+                            onPress={() => {
+                                if (page > 1) setPage(1)
+                            }}
+                            disabled={page <= 1}
+                        />
+                        <Button
                             icon={<Ionicons name={'chevron-back'} size={24} />}
                             onPress={() => {
                                 if (page > 1) setPage(page - 1)
@@ -144,6 +193,11 @@ const Index = () => {
                                 <Ionicons name={'chevron-forward'} size={24} />
                             }
                             onPress={() => setPage(page + 1)}
+                            disabled={page >= totalResults}
+                        />
+                        <Button
+                            icon={<Feather name="chevrons-right" size={24} />}
+                            onPress={() => setPage(totalResults)}
                             disabled={page >= totalResults}
                         />
                     </XGroup>
