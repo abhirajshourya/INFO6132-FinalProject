@@ -25,7 +25,11 @@ const Index = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [movies, setMovies] = useState<SearchContentType[]>([])
 
-    const movieAPI = async () => {
+    const movieAPI = async (newSearch = false) => {
+        if (newSearch) {
+            setPage(1)
+        }
+
         const baseURL = `https://www.omdbapi.com/?s=${search}&type=movie&page=${page}&apikey=c2266d16`
         setStatus('loading')
         const response = await fetch(baseURL)
@@ -68,7 +72,7 @@ const Index = () => {
                     />
                     <Button
                         icon={<Ionicons name={'search'} size={24} />}
-                        onPress={movieAPI}
+                        onPress={() => movieAPI(true)}
                     />
                 </XGroup>
 
