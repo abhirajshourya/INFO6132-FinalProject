@@ -1,4 +1,5 @@
 import ContentTile from '@/components/ContentTile'
+import { SearchContentType } from '@/constants/Types'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -22,7 +23,7 @@ const Index = () => {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const [movies, setMovies] = useState([])
+    const [movies, setMovies] = useState<SearchContentType[]>([])
 
     const movieAPI = async () => {
         const baseURL = `https://www.omdbapi.com/?s=${search}&type=movie&page=${page}&apikey=c2266d16`
