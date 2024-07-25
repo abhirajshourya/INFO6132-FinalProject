@@ -2,7 +2,7 @@ import { MovieDetailType, SearchContentType } from '@/constants/Types';
 import * as dbSvc from "@/database/service";
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Button,
     H2,
@@ -66,7 +66,9 @@ const Detail = ({ }: DetailProps) => {
         })
     }
 
-    getMovieFav()
+    useEffect(() => {
+        getMovieFav()
+    }, [])
 
     return (
         <ScrollView backgroundColor={'$background'}>

@@ -1,10 +1,11 @@
+import { SearchContentType } from '@/constants/Types';
 import {
     addDoc,
     collection,
     deleteDoc,
     doc,
     getDoc,
-    getDocs,
+    onSnapshot,
     setDoc,
     updateDoc
 } from 'firebase/firestore';
@@ -12,15 +13,26 @@ import { firebaseDB } from './config';
 
 const Root = "Movie"
 
-export async function getList() {
+export function getFavList() {
     console.log('GetList...');
-    var data: any[] = []
-    await getDocs(collection(firebaseDB, Root)).then((value) => {
-        value.forEach((e) => {
-            data.push({ ...e.data() })
-        })
+    const docsRef = collection(firebaseDB, Root)
+    const docsSnap = onSnapshot(docsRef, {
+        next: (snapshot) => {
+            const data: SearchContentType[] = []
+            snapshot.docs.forEach((doc) => {
+                console.log(doc.data())
+                data.push({
+                    Poster: doc.data().Poster,
+                    Title: doc.data().Title,
+                    Type: doc.data().Type,
+                    Year: doc.data().Year,
+                    imdbID: doc.data().imdbID,
+                })
+            })
+            console.log(data)
+            return data
+        }
     })
-    return data
 }
 
 export async function getById(id: string | undefined) {

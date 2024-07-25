@@ -1,23 +1,35 @@
 import ContentTile from '@/components/ContentTile';
-import * as dbSvc from "@/database/service";
+import { SearchContentType } from '@/constants/Types';
+import { firebaseDB } from '@/database/config';
+import {
+    collection,
+    onSnapshot
+} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H1, ScrollView, Separator, YGroup, YStack } from 'tamagui';
 
 const Index = () => {
-    const [favorites, setFavorites] = useState([{}])
-
-    const reloadFav = () => {
-        const fetchData = async () => {
-            await dbSvc.getList().then((value) => {
-                setFavorites(value)
-            })
-        }
-        fetchData()
-    }
+    const [favorites, setFavorites] = useState<SearchContentType[]>([])
 
     useEffect(() => {
-        reloadFav()
+        const docsRef = collection(firebaseDB, "Movie")
+        const docsSnap = onSnapshot(docsRef, {
+            next: (snapshot) => {
+                const data: SearchContentType[] = []
+                snapshot.docs.forEach((doc) => {
+                    console.log(doc.data())
+                    data.push({
+                        Poster: doc.data().Poster,
+                        Title: doc.data().Title,
+                        Type: doc.data().Type,
+                        Year: doc.data().Year,
+                        imdbID: doc.data().imdbID,
+                    })
+                })
+                setFavorites(data)
+            }
+        })
     }, [])
 
     return (
