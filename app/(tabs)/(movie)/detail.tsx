@@ -52,6 +52,7 @@ const Detail = ({ }: DetailProps) => {
                 Title: detailedContent?.Title,
                 Type: detailedContent?.Type,
                 Year: detailedContent?.Year,
+                imdbID: imdbID
             })
         } else {
             dbSvc.removeById(imdbID)

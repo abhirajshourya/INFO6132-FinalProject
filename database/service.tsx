@@ -12,18 +12,15 @@ import { firebaseDB } from './config';
 
 const Root = "Movie"
 
-export async function getAll() {
-    console.log('GetAll...');
-    var data: {}[] = [];
-
-    (await getDocs(collection(firebaseDB, Root))).forEach((doc) => {
-        data.push({
-            ...doc.data(),
-            id: doc.id,
+export async function getList() {
+    console.log('GetList...');
+    var data: any[] = []
+    await getDocs(collection(firebaseDB, Root)).then((value) => {
+        value.forEach((e) => {
+            data.push({ ...e.data() })
         })
     })
-
-    return data;
+    return data
 }
 
 export async function getById(id: string | undefined) {
