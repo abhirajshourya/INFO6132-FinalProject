@@ -1,21 +1,19 @@
 import { SearchContentType, SeriesDetailType } from '@/constants/Types'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams } from 'expo-router'
-import { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useEffect, useState } from 'react'
 import {
-    View,
-    Text,
-    useTheme,
-    ScrollView,
-    YStack,
-    Spacer,
-    Spinner,
-    XStack,
-    Image,
-    Paragraph,
     Button,
     H2,
+    Image,
+    Paragraph,
+    ScrollView,
+    Spacer,
+    Spinner,
+    Text,
+    useTheme,
+    XStack,
+    YStack
 } from 'tamagui'
 
 type DetailProps = {}
@@ -24,30 +22,25 @@ const Detail = ({}: DetailProps) => {
     const theme = useTheme()
     const { imdbID } = useLocalSearchParams<SearchContentType>()
     const [detailedContent, setDetailedContent] =
-        useState<SeriesDetailType | null>({
-            Title: 'Star Trek: Strange New Worlds',
-            Year: '2022–',
-            Rated: 'TV-PG',
-            Released: '05 May 2022',
-            Runtime: '1 min',
-            Genre: 'Action, Adventure, Sci-Fi',
-            Director: 'N/A',
-            Writer: 'Akiva Goldsman, Alex Kurtzman, Jenny Lumet',
-            Actors: 'Anson Mount, Ethan Peck, Christina Chong',
-            Plot: 'A prequel to Star Trek: The Original Series, the show follows the crew of the USS Enterprise under Captain Christopher Pike.',
-            Language: 'English',
-            Country: 'United States',
-            Awards: 'Nominated for 2 Primetime Emmys. 9 wins & 34 nominations total',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BM2Q2YWM0NWMtMGJmYS00NjY3LTg2MDctY2ViY2ZiM2Y5ZTAyXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_SX300.jpg',
-            Ratings: [{ Source: 'Internet Movie Database', Value: '8.3/10' }],
-            Metascore: 'N/A',
-            imdbRating: '8.3',
-            imdbVotes: '60,422',
-            imdbID: 'tt12327578',
-            Type: 'series',
-            totalSeasons: '3',
-            Response: 'True',
-        })
+        useState<SeriesDetailType | null>(null)
+
+    const [error, setError] = useState('')
+
+    useEffect(() => {
+        fetchDetail()
+    })
+
+    const fetchDetail = async () => {
+        const baseURL = `https://www.omdbapi.com/?i=${imdbID}&apikey=c2266d16`
+        const response = await fetch(baseURL)
+        const data = await response.json()
+
+        if (response.ok) {
+            setDetailedContent(data)
+        } else {
+            setError('Sorry, an error occurred. Please try again later.')
+        }
+    }
 
     return (
         <ScrollView backgroundColor={'$background'}>
