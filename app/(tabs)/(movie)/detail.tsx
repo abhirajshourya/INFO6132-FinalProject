@@ -1,27 +1,25 @@
-import { MovieDetailType, SearchContentType } from '@/constants/Types'
-import { Ionicons } from '@expo/vector-icons'
-import { useFocusEffect, useLocalSearchParams } from 'expo-router'
-import { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { MovieDetailType, SearchContentType } from '@/constants/Types';
+import * as dbSvc from "@/database/service";
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
 import {
-    View,
-    Text,
-    ScrollView,
-    Image,
-    Spinner,
-    YStack,
-    Spacer,
-    H1,
-    H2,
-    Paragraph,
-    XStack,
-    useTheme,
     Button,
-} from 'tamagui'
+    H2,
+    Image,
+    Paragraph,
+    ScrollView,
+    Spacer,
+    Spinner,
+    Text,
+    XStack,
+    YStack,
+    useTheme
+} from 'tamagui';
 
 type DetailProps = {}
 
-const Detail = ({}: DetailProps) => {
+const Detail = ({ }: DetailProps) => {
     const theme = useTheme()
     const { imdbID } = useLocalSearchParams<SearchContentType>()
     const [detailedContent, setDetailedContent] =
@@ -44,6 +42,33 @@ const Detail = ({}: DetailProps) => {
             setError('Sorry, an error occurred. Please try again later.')
         }
     }
+
+    const [isFav, setIsFav] = useState(false)
+
+    const handleFav = async () => {
+        if (isFav == true) {
+            dbSvc.saveById(imdbID, {
+                Poster: detailedContent?.Poster,
+                Title: detailedContent?.Title,
+                Type: detailedContent?.Type,
+                Year: detailedContent?.Year,
+                imdbID: imdbID
+            })
+        } else {
+            dbSvc.removeById(imdbID)
+        }
+        setIsFav(!isFav)
+    }
+
+    const getMovieFav = async () => {
+        await dbSvc.getById(imdbID).then((value) => {
+            setIsFav(!value)
+        })
+    }
+
+    useEffect(() => {
+        getMovieFav()
+    }, [])
 
     return (
         <ScrollView backgroundColor={'$background'}>
@@ -89,9 +114,11 @@ const Detail = ({}: DetailProps) => {
                             </YStack>
                             <Button
                                 width={'20%'}
-                                onPress={() => {}}
+                                onPress={handleFav}
                                 icon={
-                                    <Ionicons name="star-outline" size={30} />
+                                    isFav
+                                        ? <Ionicons name="star-outline" size={30} />
+                                        : <Ionicons name="star" size={30} color="yellow" />
                                 }
                                 chromeless
                             />
