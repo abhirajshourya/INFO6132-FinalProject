@@ -13,7 +13,7 @@ export default function TabLayout() {
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log('User is signed in')
+            // console.log('User is signed in')
         } else {
           router.replace('(auth)/login')
         }

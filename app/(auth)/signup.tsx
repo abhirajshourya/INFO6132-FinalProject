@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import {
     Text,
     Form,
@@ -19,10 +20,41 @@ const Signup = () => {
     const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState({
+    const [error, setError] = useState<{ email: string; password: string }>({
         email: '',
         password: '',
     })
+
+    const auth = getAuth()
+
+    const handleSignup = async () => {
+        setError({ email: '', password: '' })
+        if (!email) {
+            setError({ ...error, email: 'Email is required' })
+            return
+        }
+        if (!password) {
+            setError({ ...error, password: 'Password is required' })
+            return
+        }
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user
+                // console.log(user)
+                router.replace('/login')
+            })
+            .catch((error) => {
+                const errorCode = error.code
+                const errorMessage = error.message
+                // console.log(errorCode, errorMessage)
+                if (errorCode === 'auth/invalid-email') {
+                    setError({ ...error, email: 'Please enter a valid email' })
+                } else if (errorCode === 'auth/weak-password') {
+                    setError({ ...error, password: 'Password is too weak' })
+                }
+            })
+    }
+
     return (
         <ScrollView backgroundColor={'$background'}>
             <SafeAreaView />
@@ -43,7 +75,11 @@ const Signup = () => {
                             </XStack>
                             <Input
                                 value={email}
-                                onChangeText={setEmail}
+                                onChangeText={(text) => {
+                                    setEmail(text)
+                                    if (error.email)
+                                        setError({ ...error, email: '' })
+                                }}
                                 keyboardType="email-address"
                                 placeholder="Enter your email"
                             />
@@ -61,15 +97,21 @@ const Signup = () => {
                             </XStack>
                             <Input
                                 value={password}
-                                onChangeText={setPassword}
+                                onChangeText={(text) => {
+                                    setPassword(text)
+                                    if (error.password)
+                                        setError({ ...error, password: '' })
+                                }}
                                 secureTextEntry={true}
-                                keyboardType="visible-password"
                                 placeholder="Enter your password"
                             />
                         </YStack>
                     </YGroup>
                     <YStack gap={10}>
-                        <Button icon={<AntDesign name="adduser" size={20} />}>
+                        <Button
+                            icon={<AntDesign name="adduser" size={20} />}
+                            onPress={handleSignup}
+                        >
                             Signup
                         </Button>
                         <Button
