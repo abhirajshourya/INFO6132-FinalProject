@@ -16,6 +16,7 @@ import {
     XStack,
     Button,
 } from 'tamagui'
+import { auth } from '@/database/config'
 
 const Login = () => {
     const router = useRouter()
@@ -25,8 +26,6 @@ const Login = () => {
         email: '',
         password: '',
     })
-
-    const auth = getAuth()
 
     const handleLogin = async () => {
         setError({ email: '', password: '' })

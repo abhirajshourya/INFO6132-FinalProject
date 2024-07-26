@@ -1,10 +1,10 @@
 import { AntDesign } from '@expo/vector-icons'
 import React from 'react'
 import { Button, Spacer, XStack } from 'tamagui'
-import { getAuth, signOut } from 'firebase/auth'
+import { signOut } from 'firebase/auth'
+import { auth } from '@/database/config'
 
 const LogoutBtn = () => {
-    const auth = getAuth()
     const handleLogout = async () => {
         await signOut(auth)
     }

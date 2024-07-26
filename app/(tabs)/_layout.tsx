@@ -5,10 +5,10 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { useTheme } from 'tamagui'
+import { auth } from '@/database/config'
 
 export default function TabLayout() {
     const theme = useTheme()
-    const auth = getAuth()
     const router = useRouter()
 
     onAuthStateChanged(auth, (user) => {

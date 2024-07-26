@@ -15,6 +15,7 @@ import {
     Input,
     Button,
 } from 'tamagui'
+import { auth } from '@/database/config'
 
 const Signup = () => {
     const router = useRouter()
@@ -24,8 +25,6 @@ const Signup = () => {
         email: '',
         password: '',
     })
-
-    const auth = getAuth()
 
     const handleSignup = async () => {
         setError({ email: '', password: '' })

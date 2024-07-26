@@ -9,10 +9,7 @@ import {
     setDoc,
     updateDoc,
 } from 'firebase/firestore'
-import { firebaseDB } from './config'
-import { getAuth } from 'firebase/auth'
-
-const auth = getAuth()
+import { auth, firebaseDB } from './config'
 
 export function getFavList() {
     console.log('GetList...')

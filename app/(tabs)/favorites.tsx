@@ -1,7 +1,7 @@
 import ContentTile from '@/components/ContentTile'
 import LogoutBtn from '@/components/LogoutBtn'
 import { SearchContentType } from '@/constants/Types'
-import { firebaseDB } from '@/database/config'
+import { auth, firebaseDB } from '@/database/config'
 import { getAuth } from 'firebase/auth'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
@@ -11,8 +11,6 @@ import { H1, ScrollView, Separator, YGroup, YStack } from 'tamagui'
 const Index = () => {
     const insets = useSafeAreaInsets()
     const [favorites, setFavorites] = useState<SearchContentType[]>([])
-
-    const auth = getAuth()
 
     useEffect(() => {
 
