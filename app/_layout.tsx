@@ -31,7 +31,6 @@ export default function RootLayout() {
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
         Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
         InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-    
     })
 
     useEffect(() => {
@@ -45,23 +44,25 @@ export default function RootLayout() {
     }
 
     return (
-    <StoreProvider>
-        <TamaguiProvider config={tamaguiConfig}>
-            <ThemeProvider
-                value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-            >
-                <StatusBar style="light" />
-                  <Stack>
-                      <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                    />
-                      <Stack.Screen name="+not-found" />
-                  </Stack>
-            </ThemeProvider>
-        </TamaguiProvider>
-    </StoreProvider>
-    
-        
+        <StoreProvider>
+            <TamaguiProvider config={tamaguiConfig}>
+                <ThemeProvider
+                    value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                >
+                    <StatusBar style="light" />
+                    <Stack>
+                        <Stack.Screen
+                            name="(tabs)"
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="(auth)"
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen name="+not-found" />
+                    </Stack>
+                </ThemeProvider>
+            </TamaguiProvider>
+        </StoreProvider>
     )
 }
