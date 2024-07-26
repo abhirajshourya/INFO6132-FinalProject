@@ -1,6 +1,6 @@
 import ContentTile from '@/components/ContentTile'
 import { Ionicons } from '@expo/vector-icons'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
     Button,
@@ -10,9 +10,7 @@ import {
     Separator,
     Spinner,
     Text,
-    View,
     XGroup,
-    XStack,
     YGroup,
     YStack,
 } from 'tamagui'
@@ -21,36 +19,29 @@ const Index = () => {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
-    const [series, setSeries] = useState([
-        {
-            Title: "The Avengers: Earth's Mightiest Heroes",
-            Year: '2010–2012',
-            imdbID: 'tt1626038',
-            Type: 'series',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BYzA4ZjVhYzctZmI0NC00ZmIxLWFmYTgtOGIxMDYxODhmMGQ2XkEyXkFqcGdeQXVyNjExODE1MDc@._V1_SX300.jpg',
-        },
-        {
-            Title: 'The Avengers',
-            Year: '1961–1969',
-            imdbID: 'tt0054518',
-            Type: 'series',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BZWI4ZWM4ZWQtODk1ZC00MzMxLThlZmMtOGFmMTYxZTAwYjc5XkEyXkFqcGdeQXVyMTk0MjQ3Nzk@._V1_SX300.jpg',
-        },
-        {
-            Title: 'Avengers Assemble',
-            Year: '2012–2019',
-            imdbID: 'tt2455546',
-            Type: 'series',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BMTY0NTUyMDQwOV5BMl5BanBnXkFtZTgwNjAwMTA0MDE@._V1_SX300.jpg',
-        },
-        {
-            Title: 'The New Avengers',
-            Year: '1976–1977',
-            imdbID: 'tt0074031',
-            Type: 'series',
-            Poster: 'https://m.media-amazon.com/images/M/MV5BNTc5MzY3NDYtMjEwYi00ODdkLWJmNGYtM2E3Zjc5MjY2MzQ2XkEyXkFqcGdeQXVyMTY4MjAyNzU@._V1_SX300.jpg',
-        },
-    ])
+    const [series, setSeries] = useState([])
+    const [error, setError] = useState('')
+
+    const seriesAPI = async () => {
+        const baseURL = `https://www.omdbapi.com/?s=${search}&type=series&page=${page}&apikey=c2266d16`
+        setError('')
+        setLoading(true)
+        const response = await fetch(baseURL)
+        const data = await response.json()
+
+        if (response.ok) {
+            setSeries(data.Search)
+        } else {
+            setError('Sorry, an error occurred. Please try again later.')
+            setSeries([])
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        seriesAPI()
+    }, [page])
+
     return (
         <ScrollView backgroundColor={'$background'}>
             <SafeAreaView />
@@ -63,7 +54,10 @@ const Index = () => {
                         value={search}
                         onChangeText={setSearch}
                     />
-                    <Button icon={<Ionicons name={'search'} size={24} />} />
+                    <Button
+                        icon={<Ionicons name={'search'} size={24} />}
+                        onPress={seriesAPI}
+                    />
                 </XGroup>
                 <XGroup>
                     <Button
@@ -96,7 +90,10 @@ const Index = () => {
                     {loading && (
                         <Spinner size="large" scale={1.5} color={'$color10'} />
                     )}
+                    {error && <Text>{error}</Text>}
                     {!loading &&
+                        !error &&
+                        series &&
                         series.map((series, index) => (
                             <ContentTile key={index} content={series} />
                         ))}
