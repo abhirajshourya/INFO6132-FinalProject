@@ -86,6 +86,7 @@ const Login = () => {
                                 }}
                                 keyboardType="email-address"
                                 placeholder="Enter your email"
+                                autoCapitalize="none"
                             />
                         </YStack>
                         <YStack>
