@@ -1,6 +1,5 @@
 import * as themes from '@/constants/Themes'
 import { useColorScheme } from '@/hooks/useColorScheme'
-import { StoreProvider } from '@/redux/store'
 import {
     DarkTheme,
     DefaultTheme,
@@ -44,25 +43,23 @@ export default function RootLayout() {
     }
 
     return (
-        <StoreProvider>
-            <TamaguiProvider config={tamaguiConfig}>
-                <ThemeProvider
-                    value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-                >
-                    <StatusBar style="light" />
-                    <Stack>
-                        <Stack.Screen
-                            name="(tabs)"
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="(auth)"
-                            options={{ headerShown: false }}
-                        />
-                        <Stack.Screen name="+not-found" />
-                    </Stack>
-                </ThemeProvider>
-            </TamaguiProvider>
-        </StoreProvider>
+        <TamaguiProvider config={tamaguiConfig}>
+            <ThemeProvider
+                value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+            >
+                <StatusBar style="light" />
+                <Stack>
+                    <Stack.Screen
+                        name="(tabs)"
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="(auth)"
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="+not-found" />
+                </Stack>
+            </ThemeProvider>
+        </TamaguiProvider>
     )
 }
