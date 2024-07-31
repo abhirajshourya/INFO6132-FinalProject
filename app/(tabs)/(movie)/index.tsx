@@ -2,7 +2,7 @@ import ContentTile from '@/components/ContentTile'
 import { SearchContentType } from '@/constants/Types'
 import { Feather, Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
     Text,
     ScrollView,
@@ -13,9 +13,13 @@ import {
     Button,
     XGroup,
     Spinner,
+    XStack,
+    Spacer,
 } from 'tamagui'
+import LogoutBtn from '@/components/LogoutBtn'
 
 const Index = () => {
+    const insets = useSafeAreaInsets()
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState<
         'idle' | 'loading' | 'success' | 'error'
@@ -59,9 +63,9 @@ const Index = () => {
     }, [page])
 
     return (
-        <ScrollView backgroundColor={'$background'}>
-            <SafeAreaView />
-            <YStack padding={20} gap={20}>
+        <ScrollView backgroundColor={'$background'} paddingTop={insets.top} paddingHorizontal={20}>
+            <LogoutBtn />
+            <YStack gap={20}>
                 <H1>Movies</H1>
                 <XGroup>
                     <Input

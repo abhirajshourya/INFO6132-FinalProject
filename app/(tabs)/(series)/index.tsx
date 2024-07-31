@@ -1,7 +1,8 @@
 import ContentTile from '@/components/ContentTile'
+import LogoutBtn from '@/components/LogoutBtn'
 import { Feather, Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
     Button,
     H1,
@@ -16,6 +17,7 @@ import {
 } from 'tamagui'
 
 const Index = () => {
+    const insets = useSafeAreaInsets()
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
 
@@ -62,9 +64,9 @@ const Index = () => {
     }, [page])
 
     return (
-        <ScrollView backgroundColor={'$background'}>
-            <SafeAreaView />
-            <YStack padding={20} gap={20}>
+        <ScrollView backgroundColor={'$background'} paddingTop={insets.top} paddingHorizontal={20}>
+            <LogoutBtn />
+            <YStack gap={20}>
                 <H1>Series</H1>
                 <XGroup>
                     <Input

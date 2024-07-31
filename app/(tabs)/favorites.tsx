@@ -1,19 +1,20 @@
-import ContentTile from '@/components/ContentTile';
-import { SearchContentType } from '@/constants/Types';
-import { firebaseDB } from '@/database/config';
-import {
-    collection,
-    onSnapshot
-} from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { H1, ScrollView, Separator, YGroup, YStack } from 'tamagui';
+import ContentTile from '@/components/ContentTile'
+import LogoutBtn from '@/components/LogoutBtn'
+import { SearchContentType } from '@/constants/Types'
+import { auth, firebaseDB } from '@/database/config'
+import { getAuth } from 'firebase/auth'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { H1, ScrollView, Separator, YGroup, YStack } from 'tamagui'
 
 const Index = () => {
+    const insets = useSafeAreaInsets()
     const [favorites, setFavorites] = useState<SearchContentType[]>([])
 
     useEffect(() => {
-        const docsRef = collection(firebaseDB, "Movie")
+
+        const docsRef = collection(firebaseDB, `users/${auth.currentUser?.uid}/favorites`)
         const docsSnap = onSnapshot(docsRef, {
             next: (snapshot) => {
                 const data: SearchContentType[] = []
@@ -28,14 +29,18 @@ const Index = () => {
                     })
                 })
                 setFavorites(data)
-            }
+            },
         })
     }, [])
 
     return (
-        <ScrollView backgroundColor={'$background'}>
-            <SafeAreaView />
-            <YStack padding={20} gap={20}>
+        <ScrollView
+            backgroundColor={'$background'}
+            paddingTop={insets.top}
+            paddingHorizontal={20}
+        >
+            <LogoutBtn />
+            <YStack gap={20}>
                 <H1>Favorites</H1>
                 <YGroup
                     separator={
