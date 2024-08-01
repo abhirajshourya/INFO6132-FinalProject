@@ -49,7 +49,7 @@ const Index = () => {
                     marginBottom={100}
                 >
                     {favorites.map((favorite, index) => (
-                        <ContentTile key={index} content={favorite} />
+                        <ContentTile key={index} content={favorite} parent='favorites' />
                     ))}
                 </YGroup>
             </YStack>

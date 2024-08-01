@@ -63,7 +63,11 @@ const Index = () => {
     }, [page])
 
     return (
-        <ScrollView backgroundColor={'$background'} paddingTop={insets.top} paddingHorizontal={20}>
+        <ScrollView
+            backgroundColor={'$background'}
+            paddingTop={insets.top}
+            paddingHorizontal={20}
+        >
             <LogoutBtn />
             <YStack gap={20}>
                 <H1>Movies</H1>
@@ -165,7 +169,11 @@ const Index = () => {
                     {status === 'success' &&
                         movies.length > 0 &&
                         movies.map((movie, index) => (
-                            <ContentTile key={index} content={movie} />
+                            <ContentTile
+                                key={index}
+                                content={movie}
+                                parent="movie"
+                            />
                         ))}
                 </YGroup>
 

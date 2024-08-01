@@ -13,7 +13,7 @@ import {
     Text,
     XGroup,
     YGroup,
-    YStack
+    YStack,
 } from 'tamagui'
 
 const Index = () => {
@@ -21,7 +21,9 @@ const Index = () => {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
 
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+    const [status, setStatus] = useState<
+        'idle' | 'loading' | 'success' | 'error'
+    >('idle')
     const [totalResults, setTotalResults] = useState(0)
 
     const [loading, setLoading] = useState(false)
@@ -45,8 +47,7 @@ const Index = () => {
                 setStatus('success')
                 setTotalResults(Math.ceil(data.totalResults / 10))
                 setSeries(data.Search)
-            }
-            else {
+            } else {
                 setError(data.Error)
                 setSeries([])
                 setStatus('error')
@@ -64,7 +65,11 @@ const Index = () => {
     }, [page])
 
     return (
-        <ScrollView backgroundColor={'$background'} paddingTop={insets.top} paddingHorizontal={20}>
+        <ScrollView
+            backgroundColor={'$background'}
+            paddingTop={insets.top}
+            paddingHorizontal={20}
+        >
             <LogoutBtn />
             <YStack gap={20}>
                 <H1>Series</H1>
@@ -82,52 +87,52 @@ const Index = () => {
                 </XGroup>
 
                 {status === 'success' && series.length > 0 && (
-                <XGroup>
-                    <Button
+                    <XGroup>
+                        <Button
                             icon={<Feather name="chevrons-left" size={24} />}
                             onPress={() => {
                                 if (page > 1) setPage(1)
                             }}
                             disabled={page <= 1}
-                    />
-                    <Button
-                        icon={<Ionicons name={'chevron-back'} size={24} />}
-                        onPress={() => {
-                            if (page > 1) setPage(page - 1)
-                        }}
-                        disabled={page <= 1}
-                    />
-                    <Input
-                        flex={1}
-                        placeholder={'1'}
-                        placeholderTextColor={'$color'}
-                        fontSize={20}
-                        textAlign="center"
-                        keyboardType="numeric"
-                        inputMode="numeric"
-                        value={`${page.toString()}/${totalResults}`}
-                    />
-                    <Button
-                        icon={<Ionicons name={'chevron-forward'} size={24} />}
-                        onPress={() => setPage(page + 1)}
-                        disabled={page >= totalResults}
-                    />
-                    <Button
+                        />
+                        <Button
+                            icon={<Ionicons name={'chevron-back'} size={24} />}
+                            onPress={() => {
+                                if (page > 1) setPage(page - 1)
+                            }}
+                            disabled={page <= 1}
+                        />
+                        <Input
+                            flex={1}
+                            placeholder={'1'}
+                            placeholderTextColor={'$color'}
+                            fontSize={20}
+                            textAlign="center"
+                            keyboardType="numeric"
+                            inputMode="numeric"
+                            value={`${page.toString()}/${totalResults}`}
+                        />
+                        <Button
+                            icon={
+                                <Ionicons name={'chevron-forward'} size={24} />
+                            }
+                            onPress={() => setPage(page + 1)}
+                            disabled={page >= totalResults}
+                        />
+                        <Button
                             icon={<Feather name="chevrons-right" size={24} />}
                             onPress={() => setPage(totalResults)}
                             disabled={page >= totalResults}
-                    />
-                </XGroup>
+                        />
+                    </XGroup>
                 )}
-                
-
 
                 <YGroup
                     separator={
                         <Separator width={'100%'} borderColor={'$color10'} />
                     }
                 >
-                    {status == "loading" && (
+                    {status == 'loading' && (
                         <Spinner size="large" scale={1.5} color={'$color10'} />
                     )}
 
@@ -143,22 +148,22 @@ const Index = () => {
 
                     {status == 'error' && search === '' && (
                         <Text
-                        color={'$color7'}
-                        fontSize={12}
-                        textAlign={'center'}
-                    >
-                        Please enter a search term.
-                    </Text>
+                            color={'$color7'}
+                            fontSize={12}
+                            textAlign={'center'}
+                        >
+                            Please enter a search term.
+                        </Text>
                     )}
 
                     {status == 'error' && search !== '' && (
                         <Text
-                        color={'$color7'}
-                        fontSize={12}
-                        textAlign={'center'}
-                    >
-                        Sorry, an error occurred. Please try again.
-                    </Text>
+                            color={'$color7'}
+                            fontSize={12}
+                            textAlign={'center'}
+                        >
+                            Sorry, an error occurred. Please try again.
+                        </Text>
                     )}
 
                     {status === 'success' && series.length === 0 && (
@@ -171,51 +176,56 @@ const Index = () => {
                         </Text>
                     )}
 
-
-                    {status === "success" &&
+                    {status === 'success' &&
                         series.length > 0 &&
                         series.map((series, index) => (
-                            <ContentTile key={index} content={series} />
-                    ))}
+                            <ContentTile
+                                key={index}
+                                content={series}
+                                parent="series"
+                            />
+                        ))}
                 </YGroup>
 
                 {status === 'success' && series.length > 0 && (
-                <XGroup>
-                    <Button
+                    <XGroup>
+                        <Button
                             icon={<Feather name="chevrons-left" size={24} />}
                             onPress={() => {
                                 if (page > 1) setPage(1)
                             }}
                             disabled={page <= 1}
-                    />
-                    <Button
-                        icon={<Ionicons name={'chevron-back'} size={24} />}
-                        onPress={() => {
-                            if (page > 1) setPage(page - 1)
-                        }}
-                        disabled={page <= 1}
-                    />
-                    <Input
-                        flex={1}
-                        placeholder={'1'}
-                        placeholderTextColor={'$color'}
-                        fontSize={20}
-                        textAlign="center"
-                        keyboardType="numeric"
-                        inputMode="numeric"
-                        value={`${page.toString()}/${totalResults}`}
-                    />
-                    <Button
-                        icon={<Ionicons name={'chevron-forward'} size={24} />}
-                        onPress={() => setPage(page + 1)}
-                        disabled={page >= totalResults}
-                    />
-                    <Button
+                        />
+                        <Button
+                            icon={<Ionicons name={'chevron-back'} size={24} />}
+                            onPress={() => {
+                                if (page > 1) setPage(page - 1)
+                            }}
+                            disabled={page <= 1}
+                        />
+                        <Input
+                            flex={1}
+                            placeholder={'1'}
+                            placeholderTextColor={'$color'}
+                            fontSize={20}
+                            textAlign="center"
+                            keyboardType="numeric"
+                            inputMode="numeric"
+                            value={`${page.toString()}/${totalResults}`}
+                        />
+                        <Button
+                            icon={
+                                <Ionicons name={'chevron-forward'} size={24} />
+                            }
+                            onPress={() => setPage(page + 1)}
+                            disabled={page >= totalResults}
+                        />
+                        <Button
                             icon={<Feather name="chevrons-right" size={24} />}
                             onPress={() => setPage(totalResults)}
                             disabled={page >= totalResults}
-                    />
-                </XGroup>
+                        />
+                    </XGroup>
                 )}
             </YStack>
         </ScrollView>

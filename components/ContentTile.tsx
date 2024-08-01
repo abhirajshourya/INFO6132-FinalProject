@@ -18,15 +18,16 @@ import {
 } from 'tamagui'
 
 export type ContentTileProps = {
-    content: SearchContentType
+    content: SearchContentType,
+    parent: "movie" | "series" | "favorites"
 }
 
-const ContentTile = ({ content }: ContentTileProps) => {
+const ContentTile = ({ content, parent }: ContentTileProps) => {
     const router = useRouter()
 
     const tilePressHandler = () => {
         router.push({
-            pathname: `(${content.Type})/detail`,
+            pathname: `(${parent})/detail`,
             params: { ...content },
         })
     }
