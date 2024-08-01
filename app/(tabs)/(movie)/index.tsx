@@ -1,22 +1,20 @@
 import ContentTile from '@/components/ContentTile'
+import LogoutBtn from '@/components/LogoutBtn'
 import { SearchContentType } from '@/constants/Types'
 import { Feather, Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
-    Text,
-    ScrollView,
-    YStack,
-    H1,
-    YGroup,
-    Input,
     Button,
-    XGroup,
+    H1,
+    Input,
+    ScrollView,
     Spinner,
-    XStack,
-    Spacer,
+    Text,
+    XGroup,
+    YGroup,
+    YStack
 } from 'tamagui'
-import LogoutBtn from '@/components/LogoutBtn'
 
 const Index = () => {
     const insets = useSafeAreaInsets()
@@ -87,14 +85,14 @@ const Index = () => {
                 {status === 'success' && movies.length > 0 && (
                     <XGroup>
                         <Button
-                            icon={<Feather name="chevrons-left" size={24} />}
+                            icon={<Feather name="chevrons-left" size={20} />}
                             onPress={() => {
                                 if (page > 1) setPage(1)
                             }}
                             disabled={page <= 1}
                         />
                         <Button
-                            icon={<Ionicons name={'chevron-back'} size={24} />}
+                            icon={<Ionicons name={'chevron-back'} size={20} />}
                             onPress={() => {
                                 if (page > 1) setPage(page - 1)
                             }}
@@ -113,13 +111,13 @@ const Index = () => {
                         />
                         <Button
                             icon={
-                                <Ionicons name={'chevron-forward'} size={24} />
+                                <Ionicons name={'chevron-forward'} size={20} />
                             }
                             onPress={() => setPage(page + 1)}
                             disabled={page >= totalResults}
                         />
                         <Button
-                            icon={<Feather name="chevrons-right" size={24} />}
+                            icon={<Feather name="chevrons-right" size={20} />}
                             onPress={() => setPage(totalResults)}
                             disabled={page >= totalResults}
                         />
